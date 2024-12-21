@@ -1,7 +1,8 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { Table, Space, Button, InputNumber, message } from 'antd';
+import { Table, Space, Button, InputNumber } from 'antd';
 import { useWindowSize } from 'react-use';
+import { toast } from 'react-toastify';
 import { Container, FixedBottomBlock } from './styled';
 
 const FIELD_NAME = {
@@ -62,8 +63,9 @@ const Stock = () => {
         (text += `${stock.title}: ${stock.quantity1} + ${stock.quantity2}\n`),
       '',
     );
-    navigator.clipboard.writeText(reportText);
-    message.success('複製成功！');
+    navigator.clipboard.writeText(reportText).then(() => {
+      toast.success('報表已複製到剪貼簿');
+    });
   };
 
   const columns = [
