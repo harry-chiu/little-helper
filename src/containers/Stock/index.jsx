@@ -54,7 +54,7 @@ const Stock = () => {
     );
   };
 
-  const handleReportText = () => {
+  const handleCopyReportText = () => {
     const stocks = formik.values.stocks?.filter(
       stock => stock.quantity1 || stock.quantity2,
     );
@@ -66,6 +66,10 @@ const Stock = () => {
     navigator.clipboard.writeText(reportText).then(() => {
       toast.success('報表已複製到剪貼簿');
     });
+  };
+
+  const handleCleanReportText = () => {
+    formik.setFieldValue(FIELD_NAME.STOCKS, INITIAL_VALUES.stocks);
   };
 
   const columns = [
@@ -109,9 +113,13 @@ const Stock = () => {
       />
 
       <FixedBottomBlock>
-        <Button type="primary" onClick={handleReportText}>
-          複製報表
-        </Button>
+        <Space>
+          <Button type="primary" onClick={handleCopyReportText}>
+            複製報表
+          </Button>
+
+          <Button onClick={handleCleanReportText}>清空報表</Button>
+        </Space>
       </FixedBottomBlock>
     </Container>
   );
