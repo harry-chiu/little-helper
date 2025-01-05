@@ -140,7 +140,6 @@ const Stock = () => {
         return newStock;
       }),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.quantityCount]);
 
   React.useEffect(() => {
