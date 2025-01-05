@@ -16,6 +16,10 @@ const getStockTitle = index => `No.${index + 1}`;
 
 const getQuantityId = index => `quantity-${index + 1}`;
 
+const LOCAL_STORAGE_KEY = {
+  FORM: 'form',
+};
+
 const FIELD_NAME = {
   STOCKS: 'stocks',
   COLUMN_COUNT: 'columnCount',
@@ -32,7 +36,10 @@ const INITIAL_VALUES = {
 };
 const Stock = () => {
   const { height: windowHeight } = useWindowSize();
-  const formik = useFormik({ initialValues: INITIAL_VALUES });
+  const cachedValues = window.localStorage.getItem(LOCAL_STORAGE_KEY.FORM);
+  const formik = useFormik({
+    initialValues: cachedValues ? JSON.parse(cachedValues) : INITIAL_VALUES,
+  });
 
   const getStockIndex = stockId =>
     formik.values.stocks.findIndex(stock => stock.id === stockId);
@@ -68,7 +75,7 @@ const Stock = () => {
     );
   };
 
-  const handleCopyReportText = () => {
+  const handleCopyReport = () => {
     const stocks = formik.values.stocks?.filter(stock =>
       Array(formik.values.columnCount)
         .fill(0)
@@ -89,7 +96,7 @@ const Stock = () => {
     });
   };
 
-  const handleCleanReportText = () => {
+  const handleCleanReport = () => {
     formik.setFieldValue(FIELD_NAME.STOCKS, INITIAL_VALUES.stocks);
   };
 
@@ -136,6 +143,13 @@ const Stock = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.quantityCount]);
 
+  React.useEffect(() => {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEY.FORM,
+      JSON.stringify(formik.values),
+    );
+  }, [JSON.stringify(formik.values)]);
+
   return (
     <Container>
       <FixedTopBlock>
@@ -178,11 +192,11 @@ const Stock = () => {
 
       <FixedBottomBlock>
         <Space>
-          <Button type="primary" onClick={handleCopyReportText}>
+          <Button type="primary" onClick={handleCopyReport}>
             複製報表
           </Button>
 
-          <Button onClick={handleCleanReportText}>清空報表</Button>
+          <Button onClick={handleCleanReport}>清空報表</Button>
         </Space>
       </FixedBottomBlock>
     </Container>
