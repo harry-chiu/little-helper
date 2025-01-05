@@ -100,6 +100,22 @@ const Stock = () => {
     formik.setFieldValue(FIELD_NAME.STOCKS, INITIAL_VALUES.stocks);
   };
 
+  const handleColumnAdd = () => {
+    formik.setFieldValue(
+      FIELD_NAME.COLUMN_COUNT,
+      formik.values.columnCount + 1,
+    );
+  };
+
+  const handleColumnMinus = () => {
+    if (formik.values.columnCount > 1) {
+      formik.setFieldValue(
+        FIELD_NAME.COLUMN_COUNT,
+        formik.values.columnCount - 1,
+      );
+    }
+  };
+
   const columns = [
     {
       key: 'title',
@@ -153,28 +169,9 @@ const Stock = () => {
     <Container>
       <FixedTopBlock>
         <Space>
-          <Button
-            onClick={() => {
-              formik.setFieldValue(
-                FIELD_NAME.COLUMN_COUNT,
-                formik.values.columnCount + 1,
-              );
-            }}
-          >
-            新增庫存
-          </Button>
+          <Button onClick={handleColumnAdd}>新增庫存</Button>
 
-          <Button
-            danger
-            onClick={() => {
-              if (formik.values.columnCount > 1) {
-                formik.setFieldValue(
-                  FIELD_NAME.COLUMN_COUNT,
-                  formik.values.columnCount - 1,
-                );
-              }
-            }}
-          >
+          <Button danger onClick={handleColumnMinus}>
             減少庫存
           </Button>
         </Space>
